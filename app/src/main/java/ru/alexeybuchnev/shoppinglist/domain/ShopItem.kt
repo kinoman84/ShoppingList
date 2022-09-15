@@ -1,9 +1,9 @@
 package ru.alexeybuchnev.shoppinglist.domain
 
 data class ShopItem(
-    val name: String,
-    val count: Int,
-    val isActive: Boolean,
+    var name: String,
+    var count: Int,
+    var isActive: Boolean,
     var id: Int = NOT_INITIALIZED_ID
 ) {
     companion object {
