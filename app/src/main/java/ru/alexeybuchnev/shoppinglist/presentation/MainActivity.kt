@@ -10,6 +10,7 @@ import ru.alexeybuchnev.shoppinglist.domain.ShopItem
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mainViewModel: MainViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -17,14 +18,8 @@ class MainActivity : AppCompatActivity() {
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         mainViewModel.shopList.observe(this) {
-            Log.d("MainActivity", it.toString())
+            TODO()
         }
-
-        mainViewModel.getShopList()
-
-        mainViewModel.deleteShopItem(0)
-
-        mainViewModel.changeStatus(ShopItem("1", 1, true, 1))
 
     }
 }
