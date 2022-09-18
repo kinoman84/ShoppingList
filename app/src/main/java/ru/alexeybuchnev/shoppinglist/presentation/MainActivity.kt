@@ -38,6 +38,9 @@ class MainActivity : AppCompatActivity() {
                 ListAdapter.MAX_POOL_SIZE
             )
         }
+        adapter.onShopItemLongClickListener = {
+            mainViewModel.changeStatus(it)
+        }
 
 
     }
