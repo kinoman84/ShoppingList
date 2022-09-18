@@ -10,7 +10,11 @@ import ru.alexeybuchnev.shoppinglist.domain.ShopItem
 
 class ListAdapter : RecyclerView.Adapter<ListAdapter.ListItemViewHolder>() {
 
-    var list = listOf<ShopItem>()
+    var shopItemList = listOf<ShopItem>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListItemViewHolder {
         val view =
@@ -20,13 +24,13 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.ListItemViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ListItemViewHolder, position: Int) {
-        val item = list[position]
+        val item = shopItemList[position]
         holder.nameTextView.text = item.name
         holder.countTextView.text = item.count.toString()
     }
 
     override fun getItemCount(): Int {
-        return list.size
+        return shopItemList.size
     }
 
     class ListItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
