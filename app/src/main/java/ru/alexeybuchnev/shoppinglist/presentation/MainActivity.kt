@@ -2,6 +2,7 @@ package ru.alexeybuchnev.shoppinglist.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import ru.alexeybuchnev.shoppinglist.R
@@ -40,6 +41,9 @@ class MainActivity : AppCompatActivity() {
         }
         adapter.onShopItemLongClickListener = {
             mainViewModel.changeStatus(it)
+        }
+        adapter.onShopItemClickListener = {
+            Toast.makeText(this, "item $it clicked", Toast.LENGTH_SHORT).show()
         }
 
 
