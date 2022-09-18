@@ -1,7 +1,5 @@
 package ru.alexeybuchnev.shoppinglist.presentation
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.alexeybuchnev.shoppinglist.data.ShopItemRepositoryImpl
 import ru.alexeybuchnev.shoppinglist.domain.DeleteShopItemUseCase
