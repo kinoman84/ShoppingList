@@ -42,8 +42,7 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.ListItemViewHolder>() {
         holder.itemView.setOnClickListener {
             onShopItemClickListener?.invoke(item.id)
         }
-        holder.nameTextView.text = item.name
-        holder.countTextView.text = item.count.toString()
+        holder.bindShopItem(item)
     }
 
     override fun getItemCount(): Int {
@@ -59,8 +58,17 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.ListItemViewHolder>() {
     }
 
     class ListItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        var shopItem: ShopItem? = null
         val nameTextView = view.findViewById<TextView>(R.id.name_text_view)
         val countTextView = view.findViewById<TextView>(R.id.count_text_view)
+
+        fun bindShopItem(shopItem: ShopItem) {
+            this.shopItem = shopItem
+
+            nameTextView.text = shopItem.name
+            countTextView.text = shopItem.count.toString()
+        }
     }
 
     companion object {
