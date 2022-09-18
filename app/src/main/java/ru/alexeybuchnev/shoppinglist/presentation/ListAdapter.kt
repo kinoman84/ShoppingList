@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.alexeybuchnev.shoppinglist.R
 import ru.alexeybuchnev.shoppinglist.domain.ShopItem
+import java.lang.RuntimeException
 
 class ListAdapter : RecyclerView.Adapter<ListAdapter.ListItemViewHolder>() {
 
@@ -17,9 +18,15 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.ListItemViewHolder>() {
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListItemViewHolder {
+
+        val layout = when (viewType) {
+            DISABLE_LAYOUT_ID -> R.layout.item_shop_disabled
+            ENABLE_LAYOUT_ID -> R.layout.item_shop_enabled
+            else -> throw RuntimeException("Unknown view type $viewType")
+        }
+
         val view =
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_shop_enabled, parent, false)
+            LayoutInflater.from(parent.context).inflate(layout, parent, false)
         return ListItemViewHolder(view)
     }
 
@@ -33,8 +40,22 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.ListItemViewHolder>() {
         return shopItemList.size
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return if (shopItemList[position].isActive) {
+            ENABLE_LAYOUT_ID
+        } else {
+            DISABLE_LAYOUT_ID
+        }
+    }
+
     class ListItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nameTextView = view.findViewById<TextView>(R.id.name_text_view)
         val countTextView = view.findViewById<TextView>(R.id.count_text_view)
+    }
+
+    companion object {
+        const val DISABLE_LAYOUT_ID = 0
+        const val ENABLE_LAYOUT_ID = 1
+        const val MAX_POOL_SIZE = 10
     }
 }

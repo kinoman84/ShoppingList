@@ -24,8 +24,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        val recyclerView = findViewById<RecyclerView>(R.id.shop_list_recycler_view)
+
         adapter = ListAdapter()
-        recyclerView.adapter = adapter
+
+        findViewById<RecyclerView>(R.id.shop_list_recycler_view).apply {
+            adapter = this@MainActivity.adapter
+            recycledViewPool.setMaxRecycledViews(
+                ListAdapter.ENABLE_LAYOUT_ID,
+                ListAdapter.MAX_POOL_SIZE
+            )
+            recycledViewPool.setMaxRecycledViews(
+                ListAdapter.DISABLE_LAYOUT_ID,
+                ListAdapter.MAX_POOL_SIZE
+            )
+        }
+
+
     }
 }
