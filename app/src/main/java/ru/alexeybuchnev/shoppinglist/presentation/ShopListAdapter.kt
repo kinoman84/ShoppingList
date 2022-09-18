@@ -1,24 +1,13 @@
 package ru.alexeybuchnev.shoppinglist.presentation
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ListAdapter
 import ru.alexeybuchnev.shoppinglist.R
 import ru.alexeybuchnev.shoppinglist.domain.ShopItem
-import java.lang.RuntimeException
 
-class ListAdapter : RecyclerView.Adapter<ListAdapter.ListItemViewHolder>() {
-
-    var shopItemList = listOf<ShopItem>()
-        set(value) {
-            val callback = ShopListDiffCallback(shopItemList, value)
-            val diffResult = DiffUtil.calculateDiff(callback)
-            diffResult.dispatchUpdatesTo(this)
-            field = value
-        }
+class ShopListAdapter :
+    ListAdapter<ShopItem, ListItemViewHolder>(ShopItemDiffCallback()) {
 
     var onShopItemLongClickListener: ((ShopItem) -> Unit)? = null
     var onShopItemClickListener: ((Int) -> Unit)? = null
@@ -37,7 +26,7 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.ListItemViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ListItemViewHolder, position: Int) {
-        val item = shopItemList[position]
+        val item = getItem(position)
         holder.itemView.setOnLongClickListener {
             onShopItemLongClickListener?.invoke(item)
             true
@@ -48,29 +37,11 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.ListItemViewHolder>() {
         holder.bindShopItem(item)
     }
 
-    override fun getItemCount(): Int {
-        return shopItemList.size
-    }
-
     override fun getItemViewType(position: Int): Int {
-        return if (shopItemList[position].isActive) {
+        return if (getItem(position).isActive) {
             ENABLE_LAYOUT_ID
         } else {
             DISABLE_LAYOUT_ID
-        }
-    }
-
-    class ListItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-        var shopItem: ShopItem? = null
-        private val nameTextView = view.findViewById<TextView>(R.id.name_text_view)
-        private val countTextView = view.findViewById<TextView>(R.id.count_text_view)
-
-        fun bindShopItem(shopItem: ShopItem) {
-            this.shopItem = shopItem
-
-            nameTextView.text = shopItem.name
-            countTextView.text = shopItem.count.toString()
         }
     }
 

@@ -11,7 +11,7 @@ import ru.alexeybuchnev.shoppinglist.R
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mainViewModel: MainViewModel
-    private lateinit var adapter: ListAdapter
+    private lateinit var adapter: ShopListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,23 +21,23 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         mainViewModel.shopList.observe(this) {
-            adapter.shopItemList = it
+            adapter.submitList(it)
         }
     }
 
     private fun setupRecyclerView() {
 
-        adapter = ListAdapter()
+        adapter = ShopListAdapter()
         val recyclerView = findViewById<RecyclerView>(R.id.shop_list_recycler_view)
         recyclerView.apply {
             adapter = this@MainActivity.adapter
             recycledViewPool.setMaxRecycledViews(
-                ListAdapter.ENABLE_LAYOUT_ID,
-                ListAdapter.MAX_POOL_SIZE
+                ShopListAdapter.ENABLE_LAYOUT_ID,
+                ShopListAdapter.MAX_POOL_SIZE
             )
             recycledViewPool.setMaxRecycledViews(
-                ListAdapter.DISABLE_LAYOUT_ID,
-                ListAdapter.MAX_POOL_SIZE
+                ShopListAdapter.DISABLE_LAYOUT_ID,
+                ShopListAdapter.MAX_POOL_SIZE
             )
         }
         setSwipeListener(recyclerView)
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val item = adapter.shopItemList[viewHolder.adapterPosition]
+                val item = adapter.currentList[viewHolder.adapterPosition]
                 mainViewModel.deleteShopItem(item.id)
             }
         }
