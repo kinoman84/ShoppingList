@@ -49,9 +49,9 @@ class ShopItemViewModel : ViewModel() {
         }
     }
 
-    fun editItem(newItem: ShopItem) {
-        val name = newItem.name
-        val count = newItem.count
+    fun editItem(inputName: String?, inputCount: String?) {
+        val name = parseName(inputName)
+        val count = parseCount(inputCount)
         val fieldsValid = validateInput(name, count)
         if (fieldsValid) {
             _shopItem.value?.let {
@@ -88,11 +88,11 @@ class ShopItemViewModel : ViewModel() {
         return result
     }
 
-    fun resetInputName() {
+    fun resetErrorInputName() {
         _errorInputName.value = false
     }
 
-    fun resetInputCount() {
+    fun resetErrorInputCount() {
         _errorInputCount.value = false
     }
 
