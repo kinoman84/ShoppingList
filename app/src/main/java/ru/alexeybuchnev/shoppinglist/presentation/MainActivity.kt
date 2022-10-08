@@ -1,11 +1,14 @@
 package ru.alexeybuchnev.shoppinglist.presentation
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ru.alexeybuchnev.shoppinglist.R
 
 class MainActivity : AppCompatActivity() {
@@ -22,6 +25,13 @@ class MainActivity : AppCompatActivity() {
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         mainViewModel.shopList.observe(this) {
             adapter.submitList(it)
+        }
+
+        val button = findViewById<FloatingActionButton>(R.id.add_shop_item_button)
+        button.setOnClickListener{
+            Log.d("MainActivity", "add_mode")
+            val intent = ShopItemActivity.newIntentAddMode(this)
+            startActivity(intent)
         }
     }
 
@@ -71,7 +81,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun setClickListener() {
         adapter.onShopItemClickListener = {
-            Toast.makeText(this, "item $it clicked", Toast.LENGTH_SHORT).show()
+            Log.d("MainActivity", "edit_mode")
+            val intent = ShopItemActivity.newIntentEditMode(this, it)
+            startActivity(intent)
         }
     }
 
