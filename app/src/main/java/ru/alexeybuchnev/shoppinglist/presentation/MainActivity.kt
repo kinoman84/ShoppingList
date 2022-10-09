@@ -1,10 +1,8 @@
 package ru.alexeybuchnev.shoppinglist.presentation
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +11,7 @@ import ru.alexeybuchnev.shoppinglist.R
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var mainViewModel: MainViewModel
+    private lateinit var viewModel: MainViewModel
     private lateinit var adapter: ShopListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,8 +20,8 @@ class MainActivity : AppCompatActivity() {
 
         setupRecyclerView()
 
-        mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        mainViewModel.shopList.observe(this) {
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        viewModel.shopList.observe(this) {
             adapter.submitList(it)
         }
 
@@ -70,7 +68,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val item = adapter.currentList[viewHolder.adapterPosition]
-                mainViewModel.deleteShopItem(item.id)
+                viewModel.deleteShopItem(item.id)
             }
         }
 
@@ -89,7 +87,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setLongClickListener() {
         adapter.onShopItemLongClickListener = {
-            mainViewModel.changeStatus(it)
+            viewModel.changeStatus(it)
         }
     }
 }
