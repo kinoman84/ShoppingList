@@ -28,6 +28,16 @@ class ShopItemFragment(): Fragment() {
     private var screenMode: String = UNKNOWN_MODE
     private var shopItemId: Int = ShopItem.NOT_INITIALIZED_ID
 
+    private lateinit var onEditingFinishedListener: OnEditingFinishedListener
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnEditingFinishedListener){
+            onEditingFinishedListener = context
+        } else {
+            throw RuntimeException("must implements OnEditingFinishedListener")
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         parseParams()
@@ -76,7 +86,7 @@ class ShopItemFragment(): Fragment() {
 
     private fun observeLiveData() {
         viewModel.shouldCloseScreen.observe(viewLifecycleOwner) {
-            activity?.onBackPressed()
+            onEditingFinishedListener.onEditingFinished()
         }
         viewModel.errorInputName.observe(viewLifecycleOwner) {
             val message = if (it) {
@@ -145,6 +155,10 @@ class ShopItemFragment(): Fragment() {
         nameEditText = view.findViewById(R.id.name_edit_text)
         countEditText = view.findViewById(R.id.count_edit_text)
         saveButton = view.findViewById(R.id.save_button)
+    }
+
+    interface OnEditingFinishedListener {
+        fun onEditingFinished()
     }
 
     companion object {

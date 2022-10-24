@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ru.alexeybuchnev.shoppinglist.R
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishedListener {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var adapter: ShopListAdapter
@@ -40,6 +40,10 @@ class MainActivity : AppCompatActivity() {
                 launceFragment(ShopItemFragment.newInstanceAddMode())
             }
         }
+    }
+
+    override fun onEditingFinished() {
+        supportFragmentManager.popBackStack()
     }
 
     private fun isOnePaneMode(): Boolean {
