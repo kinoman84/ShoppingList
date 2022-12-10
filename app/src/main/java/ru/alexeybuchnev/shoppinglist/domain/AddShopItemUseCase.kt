@@ -1,6 +1,10 @@
 package ru.alexeybuchnev.shoppinglist.domain
 
-class AddShopItemUseCase(private val shopItemRepository: ShopItemRepository) {
+import javax.inject.Inject
+
+class AddShopItemUseCase @Inject constructor(
+    private val shopItemRepository: ShopItemRepository
+) {
 
     suspend fun addShopItem(item: ShopItem) {
         shopItemRepository.addShopItem(item)

@@ -1,24 +1,21 @@
 package ru.alexeybuchnev.shoppinglist.presentation
 
-import android.app.Application
-import androidx.lifecycle.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.alexeybuchnev.shoppinglist.data.ShopItemRepositoryImpl
 import ru.alexeybuchnev.shoppinglist.domain.AddShopItemUseCase
 import ru.alexeybuchnev.shoppinglist.domain.EditShopItemUseCase
 import ru.alexeybuchnev.shoppinglist.domain.GetShopItemUseCase
 import ru.alexeybuchnev.shoppinglist.domain.ShopItem
+import javax.inject.Inject
 
-class ShopItemViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val repository = ShopItemRepositoryImpl(application)
-
-    private val getShopItemUseCase = GetShopItemUseCase(repository)
-    private val addShopItemUseCase = AddShopItemUseCase(repository)
-    private val editShopItemUseCase = EditShopItemUseCase(repository)
+class ShopItemViewModel @Inject constructor(
+    private val getShopItemUseCase: GetShopItemUseCase,
+    private val addShopItemUseCase: AddShopItemUseCase,
+    private val editShopItemUseCase: EditShopItemUseCase
+) : ViewModel() {
 
     private val _errorInputName = MutableLiveData<Boolean>()
     val errorInputName: LiveData<Boolean>
@@ -44,31 +41,31 @@ class ShopItemViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun addShopItem(inputName: String?, inputCount: String?) {
-            val name = parseName(inputName)
-            val count = parseCount(inputCount)
-            val fieldsValid = validateInput(name, count)
-            if (fieldsValid) {
-                viewModelScope.launch {
-                    val item = ShopItem(name, count, true)
-                    addShopItemUseCase.addShopItem(item)
-                    finishWork()
-                }
+        val name = parseName(inputName)
+        val count = parseCount(inputCount)
+        val fieldsValid = validateInput(name, count)
+        if (fieldsValid) {
+            viewModelScope.launch {
+                val item = ShopItem(name, count, true)
+                addShopItemUseCase.addShopItem(item)
+                finishWork()
             }
+        }
     }
 
     fun editItem(inputName: String?, inputCount: String?) {
-            val name = parseName(inputName)
-            val count = parseCount(inputCount)
-            val fieldsValid = validateInput(name, count)
-            if (fieldsValid) {
-                _shopItem.value?.let {
-                    viewModelScope.launch {
-                        val item = it.copy(name = name, count = count)
-                        editShopItemUseCase.editShopItem(item)
-                        finishWork()
-                    }
+        val name = parseName(inputName)
+        val count = parseCount(inputCount)
+        val fieldsValid = validateInput(name, count)
+        if (fieldsValid) {
+            _shopItem.value?.let {
+                viewModelScope.launch {
+                    val item = it.copy(name = name, count = count)
+                    editShopItemUseCase.editShopItem(item)
+                    finishWork()
                 }
             }
+        }
     }
 
     private fun parseName(name: String?): String {
