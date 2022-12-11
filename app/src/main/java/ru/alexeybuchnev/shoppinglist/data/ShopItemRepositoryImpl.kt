@@ -7,14 +7,13 @@ import androidx.lifecycle.Transformations
 import ru.alexeybuchnev.shoppinglist.domain.ShopItem
 import ru.alexeybuchnev.shoppinglist.domain.ShopItemRepository
 import java.lang.RuntimeException
+import javax.inject.Inject
 import kotlin.random.Random
 
-class ShopItemRepositoryImpl(
-    application: Application
+class ShopItemRepositoryImpl @Inject constructor(
+    private val shopListDao: ShopListDao,
+    private val mapper: ShopListMapper
 ) : ShopItemRepository {
-
-    private val shopListDao = AppDatabase.getInstance(application).shopListDao()
-    private val mapper = ShopListMapper()
 
     override fun getShopList(): LiveData<List<ShopItem>> = Transformations.map(
         shopListDao.getShopList()

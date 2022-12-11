@@ -2,15 +2,8 @@ package ru.alexeybuchnev.shoppinglist.presentation
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.textfield.TextInputLayout
+import androidx.appcompat.app.AppCompatActivity
 import ru.alexeybuchnev.shoppinglist.R
 import ru.alexeybuchnev.shoppinglist.domain.ShopItem
 
@@ -18,7 +11,6 @@ class ShopItemActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinished
 
     private var screenMode = UNKNOWN_MODE
     private var shopItemId = ShopItem.NOT_INITIALIZED_ID
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
